@@ -23,6 +23,10 @@ The project is used to demonstrate my learning outcomes on [Object Oriented Java
 
 The game is hosted on [GitHub Pages](https://pages.github.com). You can play the game [here](https://tsekityam.github.io/frontend-nanodegree-arcade-game/).
 
+### Goal
+
+Move the boy from the grasses to the river.
+
 ### Controls
 
 * Use _Arrow keys_ to move the boy.
