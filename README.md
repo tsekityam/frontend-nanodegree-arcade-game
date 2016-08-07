@@ -1,6 +1,42 @@
 frontend-nanodegree-arcade-game
 ===============================
+This is one of [Udacity Front-End Web Developer Nanodegree](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001) projects. It is my implementation of classic arcade game Frogger.
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+The project is used to demonstrate my learning outcomes on [Object Oriented JavaScript](https://classroom.udacity.com/courses/ud015), [HTML5 Canvas](https://www.udacity.com/course/ud292-nd) and [Writing READMEs](https://www.udacity.com/course/ud777).
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+## How to run
+
+### Prerequisite
+* git 2.7.4
+* python 2.7.10
+
+### Step-by-step giude
+1. `$ git clone https://github.com/tsekityam/frontend-nanodegree-arcade-game.git`
+
+2. `$ cd frontend-nanodegree-arcade-game/`
+
+3. `$ python -m SimpleHTTPServer`
+
+4. Play the game at [http://0.0.0.0:8000](http://0.0.0.0:8000)
+
+## How to play
+
+### Controls
+
+* Use _Arrow keys_ to move the boy.
+
+* Use _Space_ to restart the game after you reach the water.
+
+### Elements
+
+* Boy
+
+  ![Boy](images/char-boy.png)
+
+  The main character of the game, he is thirsty and needs water. However, there are obstacles between him and the waters...
+
+* Bugs
+
+  ![Bug](images/enemy-bug.png)
+
+  Bugs are magical animates trained by the witch who is living in the castle. They will teleport you to the grasses if they catch you. So, **Don't touch them!**
