@@ -50,9 +50,12 @@ Enemy.prototype.update = function(dt) {
     }
 
     // Check collation
-    if (isCollided(this, player)) {
-        player.reset();
-    }
+    var enemy = this;
+    allPlayers.forEach(function(player) {
+        if (isCollided(enemy, player)) {
+            player.reset();
+        }
+    });
 };
 
 // Player has two new fields, original and state.
@@ -60,23 +63,17 @@ Enemy.prototype.update = function(dt) {
 // the player to it's original position after restart the game or collision.
 // State is used to store current player state. we will enable or disable
 // ability of player in different state.
-var Player = function(x, y) {
-    Element.call(this, x, y, 'images/char-boy.png');
+var Player = function(x, y, sprite) {
+    Element.call(this, x, y, sprite);
     this.original = {
         'x': this.x,
         'y': this.y
     };
-    this.state = 'Playing';
+    this.state = 'Waiting';
 };
 
 Player.prototype = Object.create(Element.prototype);
 Player.prototype.constructor = Player;
-
-Player.prototype.reset = function() {
-    this.state = 'Playing';
-    this.x = this.original.x;
-    this.y = this.original.y;
-};
 
 Player.prototype.update = function(dt) {
     if (this.x < 0) {
@@ -88,46 +85,133 @@ Player.prototype.update = function(dt) {
     if (this.x > 4 * colWidth) {
         this.x = 4 * colWidth;
     }
-    if (this.y > 5 * rowHeight) {
-        this.y = 5 * rowHeight;
+    if (this.y > 4 * rowHeight && this.state !== 'Waiting') {
+        this.y = 4 * rowHeight;
     }
     if (this.y === 0) {
-        this.state = 'Finished';
-        console.log(this.state);
+        // character reached the water, so we can start another turn.
+        if (this.state !== 'Stopped') {
+            selector.state = 'Active';
+        }
+        this.state = 'Stopped';
     }
 };
 
 Player.prototype.handleInput = function(allowedKeys) {
 
     switch (allowedKeys) {
-        case 'space':
-        // Now we only allow player reset game state after he finished the game.
-        if (this.state == 'Finished') {
-            this.reset();
-        }
-        break;
         case 'left':
-        if (this.state == 'Playing') {
+        if (this.state == 'Active') {
             this.x -= colWidth;
         }
         break;
         case 'up':
-            if (this.state == 'Playing') {
+            if (this.state == 'Active') {
             this.y -= rowHeight;
         }
         break;
         case 'right':
-            if (this.state == 'Playing') {
+            if (this.state == 'Active') {
             this.x += colWidth;
         }
         break;
         case 'down':
-            if (this.state == 'Playing') {
+            if (this.state == 'Active') {
             this.y += rowHeight;
         }
         break;
         default:
 
+    }
+};
+
+Player.prototype.reset = function() {
+    this.state = 'Waiting';
+    this.x = this.original.x;
+    this.y = this.original.y;
+    selector.state = 'Active';
+}
+
+var Selector = function() {
+    Element.call(this, colWidth * 0, rowHeight * 5, 'images/Selector.png')
+
+    // Selector has three state,
+    // 1. 'Active': the selector is on and user are selecting character.
+    // 2. 'Waiting': user is controling a character, and selector is waiting
+    //               for next activation
+    this.state = 'Active';
+}
+
+Selector.prototype = Object.create(Element.prototype);
+Selector.prototype.constructor = Selector;
+
+Selector.prototype.update = function(dt) {
+    if (this.x < 0) {
+        this.x = 0;
+    }
+    if (this.x > 4 * colWidth) {
+        this.x = 4 * colWidth;
+    }
+    if (this.y !== 5 * rowHeight) {
+        this.y = 5 * rowHeight;
+    }
+};
+
+Selector.prototype.handleInput = function(allowedKeys) {
+
+    switch (allowedKeys) {
+        case 'left':
+        if (this.state == 'Active') {
+            this.x -= colWidth;
+        }
+        break;
+        case 'right':
+        if (this.state == 'Active') {
+            this.x += colWidth;
+        }
+        break;
+        case 'space':
+        if (this.state == 'Active') {
+            var selector = this;
+            allPlayers.forEach(function(player) {
+                if (isCollided(selector, player)) {
+                    player.state = 'Active';
+                    player.handleInput('up');
+                    selector.state = 'Paused';
+                }
+            });
+        }
+        break;
+        default:
+
+    }
+};
+
+Selector.prototype.render = function() {
+    if (this.state === 'Active') {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+};
+
+var Message = function() {
+    this.shouldShow = false;
+};
+
+Message.prototype.update = function() {
+    var gameEnded = true;
+    allPlayers.forEach(function(player) {
+        gameEnded = gameEnded && player.state === 'Stopped';
+    });
+    if (gameEnded) {
+        this.shouldShow = true;
+    }
+};
+
+Message.prototype.render = function() {
+    if (this.shouldShow) {
+        ctx.font = '40px serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Mession Completed!', ctx.canvas.width / 2, 40);
     }
 };
 
@@ -155,7 +239,17 @@ var allEnemies = [
     new Enemy(colWidth * -1, rowHeight * 2, baseSpeed * 2),
     new Enemy(colWidth * -1, rowHeight * 3, baseSpeed * 1)
 ];
-var player = new Player(colWidth * 2, rowHeight * 4);
+var allPlayers = [
+    new Player(colWidth * 0, rowHeight * 5, 'images/char-boy.png'),
+    new Player(colWidth * 1, rowHeight * 5, 'images/char-cat-girl.png'),
+    new Player(colWidth * 2, rowHeight * 5, 'images/char-horn-girl.png'),
+    new Player(colWidth * 3, rowHeight * 5, 'images/char-pink-girl.png'),
+    new Player(colWidth * 4, rowHeight * 5, 'images/char-princess-girl.png')
+];
+
+var selector = new Selector();
+
+var message = new Message();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -168,5 +262,13 @@ document.addEventListener('keyup', function(e) {
         40: 'down'
     };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+    allPlayers.forEach(function(player) {
+        if (player.state === 'Active') {
+            player.handleInput(allowedKeys[e.keyCode]);
+        }
+    });
+
+    if (selector.state === 'Active') {
+        selector.handleInput(allowedKeys[e.keyCode]);
+    }
 });

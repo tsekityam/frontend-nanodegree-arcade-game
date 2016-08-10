@@ -6,6 +6,10 @@ The project is used to demonstrate my learning outcomes on [Object Oriented Java
 
 ## How to run
 
+The game is hosted on [GitHub Pages](https://pages.github.com). You can play the game [here](https://tsekityam.github.io/frontend-nanodegree-arcade-game/).
+
+Or you can run it on your machine via following steps:
+
 ### Prerequisite
 * git 2.7.4
 * python 2.7.10
@@ -21,22 +25,32 @@ The project is used to demonstrate my learning outcomes on [Object Oriented Java
 
 ## How to play
 
+1. Pick a character from the bottom of grasses.
+
+2. Move the character from grasses to the river.
+
+3. Repeat step 1 and 2 until all 5 characters are in the river.
+
+### Goal
+
+Move Princess and her guards from the grasses to the river.
+
 ### Controls
 
-* Use _Arrow keys_ to move the boy.
+* Use _Arrow keys_ to move the selector or the character.
 
-* Use _Space_ to restart the game after you reach the water.
+* Use _Space_ to select a character.
 
-### Elements
+### Characters
 
-* Boy
+* Princess Lilith and her guards
 
-  ![Boy](images/char-boy.png)
+  ![Boy](images/char-boy.png) ![Boy](images/char-cat-girl.png) ![Boy](images/char-horn-girl.png) ![Boy](images/char-pink-girl.png) ![Boy](images/char-princess-girl.png)
 
-  The main character of the game, he is thirsty and needs water. However, there are obstacles between him and the waters...
+  Princess Lilith and her guards are looking for water. They are closed to the river, however, there is obstacles between them and the river...
 
 * Bugs
 
   ![Bug](images/enemy-bug.png)
 
-  Bugs are magical animates trained by the witch who is living in the castle. They will teleport you to the grasses if they catch you. So, **Don't touch them!**
+  Bugs are magical animates trained by the witch who is living in the castle. They will teleport everyone that they caught to the grasses. So, **Don't touch them!**
