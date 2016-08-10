@@ -133,7 +133,7 @@ Player.prototype.reset = function() {
 }
 
 var Selector = function() {
-    Element.call(this, colWidth * 0, rowHeight * 5, 'images/Selector.png')
+    Element.call(this, colWidth * 0, rowHeight * 5, 'images/Selector.png');
 
     // Selector has three state,
     // 1. 'Active': the selector is on and user are selecting character.
