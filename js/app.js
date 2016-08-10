@@ -193,6 +193,28 @@ Selector.prototype.render = function() {
     }
 };
 
+var Message = function() {
+    this.shouldShow = false;
+};
+
+Message.prototype.update = function() {
+    var gameEnded = true;
+    allPlayers.forEach(function(player) {
+        gameEnded = gameEnded && player.state === 'Stopped';
+    });
+    if (gameEnded) {
+        this.shouldShow = true;
+    }
+};
+
+Message.prototype.render = function() {
+    if (this.shouldShow) {
+        ctx.font = '40px serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Mession Completed!', ctx.canvas.width / 2, 40);
+    }
+};
+
 // return true if two elements' active area are overllaped; else false.
 var isCollided = function(element1, element2) {
     if (element1.collidableArea().x >= element2.collidableArea().x + element2.collidableArea().width) {

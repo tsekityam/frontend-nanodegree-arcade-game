@@ -92,6 +92,7 @@ var Engine = (function(global) {
      */
     function updateEntities(dt) {
         selector.update();
+        message.update();
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
@@ -151,6 +152,7 @@ var Engine = (function(global) {
          * the render function you have defined.
          */
         selector.render();
+        message.render();
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
