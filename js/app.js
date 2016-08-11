@@ -98,26 +98,47 @@ Player.prototype.update = function(dt) {
 };
 
 Player.prototype.handleInput = function(allowedKeys) {
+    let player = this;
 
     switch (allowedKeys) {
         case 'left':
         if (this.state == 'Active') {
             this.x -= colWidth;
+            allRocks.forEach(function(rock) {
+                if (isCollided(player, rock)) {
+                    player.x += colWidth;
+                }
+            });
         }
         break;
         case 'up':
             if (this.state == 'Active') {
             this.y -= rowHeight;
+            allRocks.forEach(function(rock) {
+                if (isCollided(player, rock)) {
+                    player.y += rowHeight;
+                }
+            });
         }
         break;
         case 'right':
             if (this.state == 'Active') {
             this.x += colWidth;
+            allRocks.forEach(function(rock) {
+                if (isCollided(player, rock)) {
+                    player.x -= colWidth;
+                }
+            });
         }
         break;
         case 'down':
             if (this.state == 'Active') {
             this.y += rowHeight;
+            allRocks.forEach(function(rock) {
+                if (isCollided(player, rock)) {
+                    player.y -= rowHeight;
+                }
+            });
         }
         break;
         default:
@@ -193,6 +214,17 @@ Selector.prototype.render = function() {
     }
 };
 
+var Rock = function(x, y) {
+    Element.call(this, x, y, 'images/Rock.png');
+}
+
+Rock.prototype = Object.create(Element.prototype);
+Rock.prototype.constructor = Rock;
+
+Rock.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
 var Message = function() {
     this.shouldShow = false;
 };
@@ -250,6 +282,12 @@ var allPlayers = [
 var selector = new Selector();
 
 var message = new Message();
+
+var allRocks = [
+    new Rock(colWidth * 0, rowHeight * 3),
+    new Rock(colWidth * 2, rowHeight * 2),
+    new Rock(colWidth * 4, rowHeight * 1)
+]
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

@@ -152,6 +152,9 @@ var Engine = (function(global) {
          * the render function you have defined.
          */
         selector.render();
+        allRocks.forEach(function(rock) {
+            rock.render();
+        });
         message.render();
         allEnemies.forEach(function(enemy) {
             enemy.render();
@@ -184,6 +187,7 @@ var Engine = (function(global) {
         'images/char-pink-girl.png',
         'images/char-princess-girl.png',
         'images/Selector.png',
+        'images/Rock.png'
     ]);
     Resources.onReady(init);
 
