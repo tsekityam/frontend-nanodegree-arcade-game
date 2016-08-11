@@ -1,7 +1,7 @@
 // Gobal variable
 var colWidth = 101
 var rowHeight = 83;
-var baseSpeed = 100;
+var baseSpeed = 1;
 
 // Element is the base class of elements, such as player and gem, on the board.
 var Element = function(x, y, sprite) {
@@ -19,14 +19,12 @@ var Element = function(x, y, sprite) {
 Element.prototype.collidableArea = function() {
     return {
         'x': this.x,
-        'y': this.y,
-        'width': colWidth,
-        'height': rowHeight
+        'y': this.y
     };
 };
 
 Element.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x * colWidth, this.y * rowHeight);
 };
 
 // Enemies our player must avoid
@@ -45,8 +43,8 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += this.speed * dt;
-    if (this.x > ctx.canvas.width) {
-        this.x = colWidth * -1;
+    if (this.x > 5) {
+        this.x = -1;
     }
 
     // Check collation
@@ -82,11 +80,11 @@ Player.prototype.update = function(dt) {
     if (this.y < 0) {
         this.y = 0;
     }
-    if (this.x > 4 * colWidth) {
-        this.x = 4 * colWidth;
+    if (this.x > 4) {
+        this.x = 4;
     }
-    if (this.y > 4 * rowHeight && this.state !== 'Waiting') {
-        this.y = 4 * rowHeight;
+    if (this.y > 4 && this.state !== 'Waiting') {
+        this.y = 4;
     }
     if (this.y === 0) {
         // character reached the water, so we can start another turn.
@@ -103,40 +101,40 @@ Player.prototype.handleInput = function(allowedKeys) {
     switch (allowedKeys) {
         case 'left':
         if (this.state == 'Active') {
-            this.x -= colWidth;
+            this.x -= 1;
             allRocks.forEach(function(rock) {
                 if (isCollided(player, rock)) {
-                    player.x += colWidth;
+                    player.x += 1;
                 }
             });
         }
         break;
         case 'up':
             if (this.state == 'Active') {
-            this.y -= rowHeight;
+            this.y -= 1;
             allRocks.forEach(function(rock) {
                 if (isCollided(player, rock)) {
-                    player.y += rowHeight;
+                    player.y += 1;
                 }
             });
         }
         break;
         case 'right':
             if (this.state == 'Active') {
-            this.x += colWidth;
+            this.x += 1;
             allRocks.forEach(function(rock) {
                 if (isCollided(player, rock)) {
-                    player.x -= colWidth;
+                    player.x -= 1;
                 }
             });
         }
         break;
         case 'down':
             if (this.state == 'Active') {
-            this.y += rowHeight;
+            this.y += 1;
             allRocks.forEach(function(rock) {
                 if (isCollided(player, rock)) {
-                    player.y -= rowHeight;
+                    player.y -= 1;
                 }
             });
         }
@@ -154,7 +152,7 @@ Player.prototype.reset = function() {
 }
 
 var Selector = function() {
-    Element.call(this, colWidth * 0, rowHeight * 5, 'images/Selector.png');
+    Element.call(this, 0, 5, 'images/Selector.png');
 
     // Selector has three state,
     // 1. 'Active': the selector is on and user are selecting character.
@@ -170,11 +168,11 @@ Selector.prototype.update = function(dt) {
     if (this.x < 0) {
         this.x = 0;
     }
-    if (this.x > 4 * colWidth) {
-        this.x = 4 * colWidth;
+    if (this.x > 4) {
+        this.x = 4;
     }
-    if (this.y !== 5 * rowHeight) {
-        this.y = 5 * rowHeight;
+    if (this.y !== 5) {
+        this.y = 5;
     }
 };
 
@@ -183,12 +181,12 @@ Selector.prototype.handleInput = function(allowedKeys) {
     switch (allowedKeys) {
         case 'left':
         if (this.state == 'Active') {
-            this.x -= colWidth;
+            this.x -= 1;
         }
         break;
         case 'right':
         if (this.state == 'Active') {
-            this.x += colWidth;
+            this.x += 1;
         }
         break;
         case 'space':
@@ -210,7 +208,7 @@ Selector.prototype.handleInput = function(allowedKeys) {
 
 Selector.prototype.render = function() {
     if (this.state === 'Active') {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+        ctx.drawImage(Resources.get(this.sprite), this.x * colWidth, this.y * rowHeight);
     }
 };
 
@@ -222,7 +220,7 @@ Rock.prototype = Object.create(Element.prototype);
 Rock.prototype.constructor = Rock;
 
 Rock.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x * colWidth, this.y * rowHeight);
 }
 
 var Message = function() {
@@ -249,13 +247,13 @@ Message.prototype.render = function() {
 
 // return true if two elements' active area are overllaped; else false.
 var isCollided = function(element1, element2) {
-    if (element1.collidableArea().x >= element2.collidableArea().x + element2.collidableArea().width) {
+    if (element1.collidableArea().x >= element2.collidableArea().x + 1) {
         return false;
-    } else if (element1.collidableArea().y >= element2.collidableArea().y + element2.collidableArea().height) {
+    } else if (element1.collidableArea().y >= element2.collidableArea().y + 1) {
         return false;
-    } else if (element2.collidableArea().x >= element1.collidableArea().x + element1.collidableArea().width) {
+    } else if (element2.collidableArea().x >= element1.collidableArea().x + 1) {
         return false;
-    } else if (element2.collidableArea().y >= element1.collidableArea().y + element1.collidableArea().height) {
+    } else if (element2.collidableArea().y >= element1.collidableArea().y + 1) {
         return false;
     } else {
         return true;
@@ -267,16 +265,16 @@ var isCollided = function(element1, element2) {
 // Place the player object in a variable called player
 
 var allEnemies = [
-    new Enemy(colWidth * -1, rowHeight * 1, baseSpeed * 3),
-    new Enemy(colWidth * -1, rowHeight * 2, baseSpeed * 2),
-    new Enemy(colWidth * -1, rowHeight * 3, baseSpeed * 1)
+    new Enemy(-1, 1, baseSpeed * 3),
+    new Enemy(-1, 2, baseSpeed * 2),
+    new Enemy(-1, 3, baseSpeed * 1)
 ];
 var allPlayers = [
-    new Player(colWidth * 0, rowHeight * 5, 'images/char-boy.png'),
-    new Player(colWidth * 1, rowHeight * 5, 'images/char-cat-girl.png'),
-    new Player(colWidth * 2, rowHeight * 5, 'images/char-horn-girl.png'),
-    new Player(colWidth * 3, rowHeight * 5, 'images/char-pink-girl.png'),
-    new Player(colWidth * 4, rowHeight * 5, 'images/char-princess-girl.png')
+    new Player(0, 5, 'images/char-boy.png'),
+    new Player(1, 5, 'images/char-cat-girl.png'),
+    new Player(2, 5, 'images/char-horn-girl.png'),
+    new Player(3, 5, 'images/char-pink-girl.png'),
+    new Player(4, 5, 'images/char-princess-girl.png')
 ];
 
 var selector = new Selector();
@@ -284,9 +282,9 @@ var selector = new Selector();
 var message = new Message();
 
 var allRocks = [
-    new Rock(colWidth * 0, rowHeight * 3),
-    new Rock(colWidth * 2, rowHeight * 2),
-    new Rock(colWidth * 4, rowHeight * 1)
+    new Rock(0, 3),
+    new Rock(2, 2),
+    new Rock(4, 1)
 ]
 
 // This listens for key presses and sends the keys to your
