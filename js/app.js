@@ -1,6 +1,6 @@
 // Gobal variable
 var colWidth = 101
-var rowHeight = 80;
+var rowHeight = 83;
 var baseSpeed = 100;
 
 // Element is the base class of elements, such as player and gem, on the board.
