@@ -25,9 +25,9 @@ Element.prototype.render = function() {
 };
 
 // Enemies our player must avoid
-var Enemy = function(x, y, speed) {
+var Enemy = function(x, y, speedFactor) {
     Element.call(this, x, y, 'images/enemy-bug.png');
-    this.speed = speed;
+    this.speedFactor = speedFactor;
 };
 
 Enemy.prototype = Object.create(Element.prototype);
@@ -39,7 +39,7 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += this.speed * dt;
+    this.x += this.speedFactor * baseSpeed * dt;
     if (this.x >= numCols) {
         this.x = -1;
     }
@@ -264,7 +264,7 @@ var isCollided = function(x1, y1, x2, y2) {
 var allEnemies = [];
 
 for (var i = 1; i < numRows - 2; i++) {
-    allEnemies.push(new Enemy(-1, i, getRandomInt(2, 7) * baseSpeed));
+    allEnemies.push(new Enemy(-1, i, getRandomInt(2, 7)));
 }
 
 var allPlayers = [
