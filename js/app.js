@@ -5,6 +5,12 @@ let baseSpeed = 1;
 let numCols = 5;
 let numRows = 6;
 
+let getRandomInt = function(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
 // Element is the base class of elements, such as player and gem, on the board.
 var Element = function(x, y, sprite) {
     // The image/sprite for the element, this uses
@@ -266,11 +272,11 @@ var selector = new Selector();
 
 var message = new Message();
 
-var allRocks = [
-    new Rock(0, 3),
-    new Rock(2, 2),
-    new Rock(4, 1)
-]
+var allRocks = [];
+
+for (var i = 1; i < numRows - 2; i++) {
+    allRocks.push(new Rock(getRandomInt(0, numCols), i));
+}
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
