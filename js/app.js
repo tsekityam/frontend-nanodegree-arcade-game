@@ -50,6 +50,8 @@ Enemy.prototype.update = function(dt) {
 // Player has two new fields, original and state.
 // Original is a used to save the Player's original position, so we can reset
 // the player to it's original position after restart the game or collision.
+// dx and dy is the user input on the chaneg of player coordinates. We will
+// try to update player by these value in update()
 // State is used to store current player state. we will enable or disable
 // ability of player in different state.
 var Player = function(x, y, sprite) {
@@ -58,6 +60,8 @@ var Player = function(x, y, sprite) {
         'x': this.x,
         'y': this.y
     };
+    this.dx = 0;
+    this.dy = 0;
     this.state = 'Waiting';
 };
 
@@ -65,6 +69,20 @@ Player.prototype = Object.create(Element.prototype);
 Player.prototype.constructor = Player;
 
 Player.prototype.update = function(dt) {
+
+    var player = this;
+    allRocks.forEach(function(rock) {
+      if (isCollided(player.x + player.dx, player.y + player.dy, rock.x, rock.y)) {
+          player.dx = 0;
+          player.dy = 0;
+      }
+    });
+    this.x += this.dx;
+    this.y += this.dy;
+
+    this.dx = 0;
+    this.dy = 0;
+
     if (this.x < 0) {
         this.x = 0;
     }
@@ -87,48 +105,19 @@ Player.prototype.update = function(dt) {
 };
 
 Player.prototype.handleInput = function(allowedKeys) {
-    let player = this;
 
     switch (allowedKeys) {
         case 'left':
-        if (this.state == 'Active') {
-            this.x -= 1;
-            allRocks.forEach(function(rock) {
-                if (isCollided(player.x, player.y, rock.x, rock.y)) {
-                    player.x += 1;
-                }
-            });
-        }
+            this.dx = -1;
         break;
         case 'up':
-            if (this.state == 'Active') {
-            this.y -= 1;
-            allRocks.forEach(function(rock) {
-                if (isCollided(player.x, player.y, rock.x, rock.y)) {
-                    player.y += 1;
-                }
-            });
-        }
+            this.dy = -1;
         break;
         case 'right':
-            if (this.state == 'Active') {
-            this.x += 1;
-            allRocks.forEach(function(rock) {
-                if (isCollided(player.x, player.y, rock.x, rock.y)) {
-                    player.x -= 1;
-                }
-            });
-        }
+            this.dx = 1;
         break;
         case 'down':
-            if (this.state == 'Active') {
-            this.y += 1;
-            allRocks.forEach(function(rock) {
-                if (isCollided(player.x, player.y, rock.x, rock.y)) {
-                    player.y -= 1;
-                }
-            });
-        }
+            this.dy = 1;
         break;
         default:
 
@@ -150,12 +139,20 @@ var Selector = function() {
     // 2. 'Waiting': user is controling a character, and selector is waiting
     //               for next activation
     this.state = 'Active';
+
+    // dx is the user input on updating selector x coordinate, we will update
+    // selector's x coordinate with this value during update()
+    this.dx = 0;
 }
 
 Selector.prototype = Object.create(Element.prototype);
 Selector.prototype.constructor = Selector;
 
 Selector.prototype.update = function(dt) {
+
+    this.x += this.dx;
+    this.dx = 0;
+
     if (this.x < 0) {
         this.x = 0;
     }
@@ -171,14 +168,10 @@ Selector.prototype.handleInput = function(allowedKeys) {
 
     switch (allowedKeys) {
         case 'left':
-        if (this.state == 'Active') {
-            this.x -= 1;
-        }
+            this.dx = -1;
         break;
         case 'right':
-        if (this.state == 'Active') {
-            this.x += 1;
-        }
+            this.dx = 1;
         break;
         case 'space':
         if (this.state == 'Active') {
