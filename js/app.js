@@ -255,11 +255,12 @@ var isCollided = function(x1, y1, x2, y2) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-var allEnemies = [
-    new Enemy(-1, 1, baseSpeed * 3),
-    new Enemy(-1, 2, baseSpeed * 2),
-    new Enemy(-1, 3, baseSpeed * 1)
-];
+var allEnemies = [];
+
+for (var i = 1; i < numRows - 2; i++) {
+    allEnemies.push(new Enemy(-1, i, getRandomInt(1, 3) * baseSpeed));
+}
+
 var allPlayers = [
     new Player(0, numRows - 1, 'images/char-boy.png'),
     new Player(1, numRows - 1, 'images/char-cat-girl.png'),
