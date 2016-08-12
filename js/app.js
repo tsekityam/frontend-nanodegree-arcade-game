@@ -41,7 +41,7 @@ Enemy.prototype.update = function(dt) {
     // Check collation
     var enemy = this;
     allPlayers.forEach(function(player) {
-        if (isCollided(enemy, player)) {
+        if (isCollided(enemy.x, enemy.y, player.x, player.y)) {
             player.reset();
         }
     });
@@ -94,7 +94,7 @@ Player.prototype.handleInput = function(allowedKeys) {
         if (this.state == 'Active') {
             this.x -= 1;
             allRocks.forEach(function(rock) {
-                if (isCollided(player, rock)) {
+                if (isCollided(player.x, player.y, rock.x, rock.y)) {
                     player.x += 1;
                 }
             });
@@ -104,7 +104,7 @@ Player.prototype.handleInput = function(allowedKeys) {
             if (this.state == 'Active') {
             this.y -= 1;
             allRocks.forEach(function(rock) {
-                if (isCollided(player, rock)) {
+                if (isCollided(player.x, player.y, rock.x, rock.y)) {
                     player.y += 1;
                 }
             });
@@ -114,7 +114,7 @@ Player.prototype.handleInput = function(allowedKeys) {
             if (this.state == 'Active') {
             this.x += 1;
             allRocks.forEach(function(rock) {
-                if (isCollided(player, rock)) {
+                if (isCollided(player.x, player.y, rock.x, rock.y)) {
                     player.x -= 1;
                 }
             });
@@ -124,7 +124,7 @@ Player.prototype.handleInput = function(allowedKeys) {
             if (this.state == 'Active') {
             this.y += 1;
             allRocks.forEach(function(rock) {
-                if (isCollided(player, rock)) {
+                if (isCollided(player.x, player.y, rock.x, rock.y)) {
                     player.y -= 1;
                 }
             });
@@ -184,7 +184,7 @@ Selector.prototype.handleInput = function(allowedKeys) {
         if (this.state == 'Active') {
             var selector = this;
             allPlayers.forEach(function(player) {
-                if (isCollided(selector, player)) {
+                if (isCollided(selector.x, selector.y, player.x, player.y)) {
                     player.state = 'Active';
                     player.handleInput('up');
                     selector.state = 'Paused';
@@ -236,15 +236,16 @@ Message.prototype.render = function() {
     }
 };
 
-// return true if two elements' active area are overllaped; else false.
-var isCollided = function(element1, element2) {
-    if (element1.x >= element2.x + 1) {
+// input are the coordinates of the elements.
+// return true if two elements are overllaped; else false.
+var isCollided = function(x1, y1, x2, y2) {
+    if (x1 >= x2 + 1) {
         return false;
-    } else if (element1.y >= element2.y + 1) {
+    } else if (y1 >= y2 + 1) {
         return false;
-    } else if (element2.x >= element1.x + 1) {
+    } else if (x2 >= x1 + 1) {
         return false;
-    } else if (element2.y >= element1.y + 1) {
+    } else if (y2 >= y1 + 1) {
         return false;
     } else {
         return true;
