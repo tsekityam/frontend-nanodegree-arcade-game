@@ -1,7 +1,7 @@
 // Gobal variable
 let colWidth = 101
 let rowHeight = 83;
-let baseSpeed = 1;
+let baseSpeed = 0.5;
 let numCols = 6;
 let numRows = 7;
 
@@ -258,7 +258,7 @@ var isCollided = function(x1, y1, x2, y2) {
 var allEnemies = [];
 
 for (var i = 1; i < numRows - 2; i++) {
-    allEnemies.push(new Enemy(-1, i, getRandomInt(1, 3) * baseSpeed));
+    allEnemies.push(new Enemy(-1, i, getRandomInt(2, 7) * baseSpeed));
 }
 
 var allPlayers = [
