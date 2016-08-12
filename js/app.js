@@ -2,6 +2,8 @@
 var colWidth = 101
 var rowHeight = 83;
 var baseSpeed = 1;
+var numCols = 5;
+var numRows = 6;
 
 // Element is the base class of elements, such as player and gem, on the board.
 var Element = function(x, y, sprite) {
@@ -69,11 +71,11 @@ Player.prototype.update = function(dt) {
     if (this.y < 0) {
         this.y = 0;
     }
-    if (this.x > 4) {
-        this.x = 4;
+    if (this.x >= numCols) {
+        this.x = numCols - 1;
     }
-    if (this.y > 4 && this.state !== 'Waiting') {
-        this.y = 4;
+    if (this.y >= (numRows - 1) && this.state !== 'Waiting') {
+        this.y = numRows - 2;
     }
     if (this.y === 0) {
         // character reached the water, so we can start another turn.
