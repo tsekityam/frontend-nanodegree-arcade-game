@@ -25,8 +25,8 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    canvas.width = 505;
-    canvas.height = 606;
+    canvas.width = numCols * colWidth;
+    canvas.height = numRows * rowHeight + 108;
     doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
@@ -112,12 +112,9 @@ var Engine = (function(global) {
          * for that particular row of the game level.
          */
         var rowImages = [
-                'images/water-block.png',   // Top row is water
-                'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/stone-block.png',   // Row 2 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
+                'images/water-block.png',
+                'images/stone-block.png',
+                'images/grass-block.png'
             ],
             row, col;
 
@@ -126,6 +123,15 @@ var Engine = (function(global) {
          * portion of the "grid"
          */
         for (row = 0; row < numRows; row++) {
+            var rowImage;
+            if (row === 0) {
+                rowImage = rowImages[0]; // water-block
+            } else if (row >= numRows - 2) {
+                rowImage = rowImages[2]; // grass-block
+            } else {
+                rowImage = rowImages[1]; // stone-block
+            }
+
             for (col = 0; col < numCols; col++) {
                 /* The drawImage function of the canvas' context element
                  * requires 3 parameters: the image to draw, the x coordinate
@@ -134,7 +140,7 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * colWidth, row * rowHeight);
+                ctx.drawImage(Resources.get(rowImage), col * colWidth, row * rowHeight);
             }
         }
 
