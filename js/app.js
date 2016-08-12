@@ -1,9 +1,9 @@
 // Gobal variable
-var colWidth = 101
-var rowHeight = 83;
-var baseSpeed = 1;
-var numCols = 5;
-var numRows = 6;
+let colWidth = 101
+let rowHeight = 83;
+let baseSpeed = 1;
+let numCols = 5;
+let numRows = 6;
 
 // Element is the base class of elements, such as player and gem, on the board.
 var Element = function(x, y, sprite) {
