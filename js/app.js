@@ -12,17 +12,6 @@ var Element = function(x, y, sprite) {
     this.y = y;
 };
 
-// The sprite of the element contains lots of empty space, which should not be
-// used to trigger collision. This function used to get the collidable area of
-// the elements.
-//i.e. if two elements' collidable area are overlapped, then collision occured.
-Element.prototype.collidableArea = function() {
-    return {
-        'x': this.x,
-        'y': this.y
-    };
-};
-
 Element.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x * colWidth, this.y * rowHeight);
 };
@@ -247,13 +236,13 @@ Message.prototype.render = function() {
 
 // return true if two elements' active area are overllaped; else false.
 var isCollided = function(element1, element2) {
-    if (element1.collidableArea().x >= element2.collidableArea().x + 1) {
+    if (element1.x >= element2.x + 1) {
         return false;
-    } else if (element1.collidableArea().y >= element2.collidableArea().y + 1) {
+    } else if (element1.y >= element2.y + 1) {
         return false;
-    } else if (element2.collidableArea().x >= element1.collidableArea().x + 1) {
+    } else if (element2.x >= element1.x + 1) {
         return false;
-    } else if (element2.collidableArea().y >= element1.collidableArea().y + 1) {
+    } else if (element2.y >= element1.y + 1) {
         return false;
     } else {
         return true;
