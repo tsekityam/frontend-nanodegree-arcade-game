@@ -2,8 +2,8 @@
 let colWidth = 101
 let rowHeight = 83;
 let baseSpeed = 1;
-let numCols = 5;
-let numRows = 6;
+let numCols = 6;
+let numRows = 7;
 
 let getRandomInt = function(min, max) {
     min = Math.ceil(min);
