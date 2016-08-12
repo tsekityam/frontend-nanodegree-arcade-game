@@ -159,11 +159,11 @@ Selector.prototype.update = function(dt) {
     if (this.x < 0) {
         this.x = 0;
     }
-    if (this.x > 4) {
-        this.x = 4;
+    if (this.x >= numCols) {
+        this.x = numCols - 1;
     }
-    if (this.y !== 5) {
-        this.y = 5;
+    if (this.y !== numRows - 1) {
+        this.y = numRows - 1;
     }
 };
 
