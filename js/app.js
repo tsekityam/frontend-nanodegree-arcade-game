@@ -83,6 +83,12 @@ Player.prototype.update = function(dt) {
           player.dy = 0;
       }
     });
+    allPlayers.forEach(function(anotherPlayer) {
+      if (isCollided(player.x + player.dx, player.y + player.dy, anotherPlayer.x, anotherPlayer.y)) {
+          player.dx = 0;
+          player.dy = 0;
+      }
+    });
     this.x += this.dx;
     this.y += this.dy;
 
