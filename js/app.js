@@ -132,7 +132,7 @@ Player.prototype.reset = function() {
 }
 
 var Selector = function() {
-    Element.call(this, 0, 5, 'images/Selector.png');
+    Element.call(this, 0, numRows - 1, 'images/Selector.png');
 
     // Selector has three state,
     // 1. 'Active': the selector is on and user are selecting character.
@@ -255,11 +255,11 @@ var allEnemies = [
     new Enemy(-1, 3, baseSpeed * 1)
 ];
 var allPlayers = [
-    new Player(0, 5, 'images/char-boy.png'),
-    new Player(1, 5, 'images/char-cat-girl.png'),
-    new Player(2, 5, 'images/char-horn-girl.png'),
-    new Player(3, 5, 'images/char-pink-girl.png'),
-    new Player(4, 5, 'images/char-princess-girl.png')
+    new Player(0, numRows - 1, 'images/char-boy.png'),
+    new Player(1, numRows - 1, 'images/char-cat-girl.png'),
+    new Player(2, numRows - 1, 'images/char-horn-girl.png'),
+    new Player(3, numRows - 1, 'images/char-pink-girl.png'),
+    new Player(4, numRows - 1, 'images/char-princess-girl.png')
 ];
 
 var selector = new Selector();
