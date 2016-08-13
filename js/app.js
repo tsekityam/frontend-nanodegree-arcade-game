@@ -325,7 +325,7 @@ Message.prototype.render = function() {
     if (this.shouldShow()) {
         ctx.font = this.font;
         ctx.textAlign = this.align;
-        ctx.fillColor = this.color;
+        ctx.fillStyle = this.color;
         ctx.fillText(this.message, this.x, this.y);
     }
 };
