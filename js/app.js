@@ -373,7 +373,6 @@ var allMessages = [
             isGameEnded = isGameEnded && player.states.indexOf('Stopped') > -1;
         });
         return isGameEnded;
-    });
 ];
 
 var allRocks = [];
