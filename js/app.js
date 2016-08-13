@@ -171,7 +171,8 @@ Player.prototype.handleInput = function(allowedKeys) {
 };
 
 Player.prototype.reset = function() {
-    this.states = ['Waiting'];
+    this.states.splice(this.states.indexOf('Active'), 1);
+    this.states.push('Waiting')
     this.x = this.original.x;
     this.y = this.original.y;
     selector.state = 'Active';
