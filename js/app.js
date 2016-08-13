@@ -95,6 +95,13 @@ Player.prototype.update = function(dt) {
     this.dx = 0;
     this.dy = 0;
 
+    allItems.forEach(function(item) {
+        if (isCollided(player.x, player.y, item.x, item.y)) {
+            allItems.splice(allItems.indexOf(item), 1);
+            item.consume();
+        }
+    });
+
     if (this.x < 0) {
         this.x = 0;
     }
@@ -142,6 +149,54 @@ Player.prototype.reset = function() {
     this.y = this.original.y;
     selector.state = 'Active';
 }
+
+var Item = function(x, y, sprite, type) {
+    Element.call(this, x, y, sprite);
+
+    this.type = type;
+}
+
+Item.prototype = Object.create(Element.prototype);
+Item.prototype.constructor = Item;
+
+Item.prototype.update = function() {
+    var item = this;
+    var itemIndex = allItems.indexOf(this);
+    // remove item from item array if it overllaps with a rock or other item
+    allRocks.forEach(function(rock) {
+        if (isCollided(item.x, item.y, rock.x, rock.y)) {
+            allItems.splice(itemIndex, 1);
+        }
+    });
+    allItems.forEach(function(anotherItem) {
+        if (anotherItem === item) {
+            return;
+        }
+        if (isCollided(item.x, item.y, anotherItem.x, anotherItem.y)) {
+            allItems.splice(allItems.indexOf(item), 1);
+        }
+    });
+}
+
+Item.prototype.render = function () {
+    ctx.drawImage(Resources.get(this.sprite), this.x * colWidth, this.y * rowHeight);
+};
+
+Item.prototype.consume = function () {
+    switch (this.type) {
+        case 'Gem Blue':
+        // TODO
+        break;
+        case 'Gem Green':
+        // TODO
+        break;
+        case 'Gem Orange':
+        // TODO
+        break;
+        default:
+
+    }
+};
 
 var Selector = function() {
     Element.call(this, 0, numRows - 1, 'images/Selector.png');
@@ -284,6 +339,12 @@ var allRocks = [];
 for (var i = 1; i < numRows - 2; i++) {
     allRocks.push(new Rock(getRandomInt(0, numCols), i));
 }
+
+var allItems = [
+    new Item(getRandomInt(0, numCols), getRandomInt(1, numRows - 2), 'images/Gem Blue.png', 'Gem Blue'),
+    new Item(getRandomInt(0, numCols), getRandomInt(1, numRows - 2), 'images/Gem Green.png', 'Gem Green'),
+    new Item(getRandomInt(0, numCols), getRandomInt(1, numRows - 2), 'images/Gem Orange.png', 'Gem Orange')
+];
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

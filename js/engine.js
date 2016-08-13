@@ -93,6 +93,9 @@ var Engine = (function(global) {
     function updateEntities(dt) {
         selector.update();
         message.update();
+        allItems.forEach(function(item) {
+            item.update();
+        });
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
@@ -159,6 +162,9 @@ var Engine = (function(global) {
         allRocks.forEach(function(rock) {
             rock.render();
         });
+        allItems.forEach(function(item) {
+            item.render();
+        });
         message.render();
         allEnemies.forEach(function(enemy) {
             enemy.render();
@@ -191,7 +197,10 @@ var Engine = (function(global) {
         'images/char-pink-girl.png',
         'images/char-princess-girl.png',
         'images/Selector.png',
-        'images/Rock.png'
+        'images/Rock.png',
+        'images/Gem Blue.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png'
     ]);
     Resources.onReady(init);
 
