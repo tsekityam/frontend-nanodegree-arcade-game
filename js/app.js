@@ -326,7 +326,7 @@ Message.prototype.render = function() {
     if (this.shouldShow) {
         ctx.font = '40px serif';
         ctx.textAlign = 'center';
-        ctx.fillText('Mession Completed!', ctx.canvas.width / 2, 40);
+        ctx.fillText('Mission Completed!', ctx.canvas.width / 2, 40);
     }
 };
 
