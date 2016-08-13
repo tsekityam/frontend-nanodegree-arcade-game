@@ -5,6 +5,8 @@ var baseSpeed = 0.5;
 var numCols = 6;
 var numRows = 7;
 
+// The following code is copied from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+// Any copyright is dedicated to the Public Domain. http://creativecommons.org/publicdomain/zero/1.0/
 var getRandomInt = function(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
