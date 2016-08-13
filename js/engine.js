@@ -92,7 +92,6 @@ var Engine = (function(global) {
      */
     function updateEntities(dt) {
         selector.update();
-        message.update();
         allItems.forEach(function(item) {
             item.update();
         });
@@ -101,6 +100,9 @@ var Engine = (function(global) {
         });
         allPlayers.forEach(function(player) {
             player.update();
+        });
+        allMessages.forEach(function(message) {
+            message.update();
         });
     }
 
@@ -165,12 +167,14 @@ var Engine = (function(global) {
         allItems.forEach(function(item) {
             item.render();
         });
-        message.render();
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
         allPlayers.forEach(function(player) {
             player.render();
+        });
+        allMessages.forEach(function(message) {
+            message.render();
         });
     }
 

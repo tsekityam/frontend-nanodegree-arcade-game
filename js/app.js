@@ -308,8 +308,14 @@ Rock.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x * colWidth, this.y * rowHeight);
 }
 
-var Message = function() {
+var Message = function(x, y, message, font, align, color) {
     this.shouldShow = false;
+    this.x = x;
+    this.y = y;
+    this.message = message;
+    this.font = font;
+    this.align = align;
+    this.color = color;
 };
 
 Message.prototype.update = function() {
@@ -324,9 +330,11 @@ Message.prototype.update = function() {
 
 Message.prototype.render = function() {
     if (this.shouldShow) {
-        ctx.font = '40px serif';
-        ctx.textAlign = 'center';
+        ctx.font = this.font;
+        ctx.textAlign = this.textAlign;
+        ctx.fillColor = this.color;
         ctx.fillText('Mission Completed!', ctx.canvas.width / 2, 40);
+        ctx.fillText(this.message, this.x, this.y);
     }
 };
 
@@ -366,7 +374,9 @@ var allPlayers = [
 
 var selector = new Selector();
 
-var message = new Message();
+var allMessages = [
+    new Message(0, 40, 'Mission Completed', '40px serif', 'left', 'Black')
+];
 
 var allRocks = [];
 
