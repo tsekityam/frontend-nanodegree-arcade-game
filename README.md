@@ -37,9 +37,9 @@ Move Princess and her guards from the grasses to the river.
 
 ### Controls
 
-* Use _Arrow keys_ to move the selector or the character.
+* Use _Arrow keys_ to move.
 
-* Use _Space_ to select a character.
+* Use _Space_ to confirm.
 
 ### Characters
 
@@ -53,4 +53,30 @@ Move Princess and her guards from the grasses to the river.
 
   ![Bug](images/enemy-bug.png)
 
-  Bugs are magical animates trained by the witch who is living in the castle. They will teleport everyone that they caught to the grasses. So, **Don't touch them!**
+  Bugs are trained by the witch. These bugs will teleport everyone that they caught to the grasses. So, **Don't touch them!**. One more thing, the witch will summon another bug if she knows that Princess Lilith and her guards are reaching the water.
+
+### Items
+
+* Rock
+
+  ![Rock](images/Rock.png)
+
+  Rocks are there since the beginning of the time. Rock stops most of us, but not the one who is **unstoppable**.
+
+* Gem Blue
+
+  ![Gem Blue](images/Gem Blue.png)
+
+  Bugs hate the smelling of the gem and will never touch it. In order word, the one who owns the gem is **unbeatable**.
+
+* Gem Green
+
+  ![Gem Green](images/Gem Green.png)
+
+  The one who owns the gem is **unstoppable**. No one or rocks can block his path.
+
+* Gem Orange
+
+  ![Gem Orange](images/Gem Orange.png)
+
+  If the power within the gem is released, the speed of bugs on the board will be halved.
