@@ -1,5 +1,5 @@
 // Gobal variable
-let colWidth = 101
+let colWidth = 101;
 let rowHeight = 83;
 let baseSpeed = 0.5;
 let numCols = 6;
@@ -9,7 +9,7 @@ let getRandomInt = function(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
-}
+};
 
 // Element is the base class of elements, such as player and gem, on the board.
 var Element = function(x, y, sprite) {
@@ -176,17 +176,17 @@ Player.prototype.handleInput = function(allowedKeys) {
 
 Player.prototype.reset = function() {
     this.states.splice(this.states.indexOf('Active'), 1);
-    this.states.push('Waiting')
+    this.states.push('Waiting');
     this.x = this.original.x;
     this.y = this.original.y;
     selector.state = 'Active';
-}
+};
 
 var Item = function(x, y, sprite, type) {
     Element.call(this, x, y, sprite);
 
     this.type = type;
-}
+};
 
 Item.prototype = Object.create(Element.prototype);
 Item.prototype.constructor = Item;
@@ -208,7 +208,7 @@ Item.prototype.update = function() {
             allItems.splice(allItems.indexOf(item), 1);
         }
     });
-}
+};
 
 Item.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x * colWidth, this.y * rowHeight);
@@ -217,10 +217,10 @@ Item.prototype.render = function () {
 Item.prototype.consumeBy = function (player) {
     switch (this.type) {
         case 'Gem Blue':
-        player.states.push('Unbeatable')
+        player.states.push('Unbeatable');
         break;
         case 'Gem Green':
-        player.states.push('Unstoppable')
+        player.states.push('Unstoppable');
         break;
         case 'Gem Orange':
         allEnemies.forEach(function(enemy) {
@@ -244,7 +244,7 @@ var Selector = function() {
     // dx is the user input on updating selector x coordinate, we will update
     // selector's x coordinate with this value during update()
     this.dx = 0;
-}
+};
 
 Selector.prototype = Object.create(Element.prototype);
 Selector.prototype.constructor = Selector;
@@ -299,14 +299,14 @@ Selector.prototype.render = function() {
 
 var Rock = function(x, y) {
     Element.call(this, x, y, 'images/Rock.png');
-}
+};
 
 Rock.prototype = Object.create(Element.prototype);
 Rock.prototype.constructor = Rock;
 
 Rock.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x * colWidth, this.y * rowHeight);
-}
+};
 
 // shouldShow is a function with no parameters for figureing out show this
 // message be shown. It will be called within render(). If it return false,
