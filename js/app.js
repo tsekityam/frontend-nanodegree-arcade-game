@@ -93,7 +93,7 @@ Player.prototype.update = function(dt) {
 
     var player = this;
 
-    if (player.states.indexOf('Unstoppable') > -1) {
+    if (player.states.indexOf('Unstoppable') === -1) {
         allRocks.forEach(function(rock) {
           if (isCollided(player.x + player.dx, player.y + player.dy, rock.x, rock.y)) {
               player.dx = 0;
