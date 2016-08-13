@@ -45,7 +45,7 @@ Move Princess and her guards from the grasses to the river.
 
 * Princess Lilith and her guards
 
-  ![Boy](images/char-boy.png) ![Boy](images/char-cat-girl.png) ![Boy](images/char-horn-girl.png) ![Boy](images/char-pink-girl.png) ![Boy](images/char-princess-girl.png)
+  ![Boy](images/char-boy.png) ![Cat Girl](images/char-cat-girl.png) ![Horn Girl](images/char-horn-girl.png) ![Pink Girl](images/char-pink-girl.png) ![Princess Girl](images/char-princess-girl.png)
 
   Princess Lilith and her guards are looking for water. They are closed to the river, however, there is obstacles between them and the river...
 
