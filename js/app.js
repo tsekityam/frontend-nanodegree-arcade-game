@@ -333,7 +333,6 @@ Message.prototype.render = function() {
         ctx.font = this.font;
         ctx.textAlign = this.textAlign;
         ctx.fillColor = this.color;
-        ctx.fillText('Mission Completed!', ctx.canvas.width / 2, 40);
         ctx.fillText(this.message, this.x, this.y);
     }
 };
