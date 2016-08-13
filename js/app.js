@@ -136,8 +136,12 @@ Player.prototype.update = function(dt) {
     if (this.x >= numCols) {
         this.x = numCols - 1;
     }
-    if (this.y >= (numRows - 1) && this.states.indexOf('Waiting') === -1) {
-        this.y = numRows - 2;
+    if (this.states.indexOf('Waiting') != -1) {
+        this.y = numRows - 1;
+    } else {
+        if (this.y >= (numRows - 1)) {
+            this.y = numRows - 2;
+        }
     }
     if (this.y === 0) {
         // character reached the water, so we can start another turn.
