@@ -1,11 +1,11 @@
 // Gobal variable
-let colWidth = 101;
-let rowHeight = 83;
-let baseSpeed = 0.5;
-let numCols = 6;
-let numRows = 7;
+var colWidth = 101;
+var rowHeight = 83;
+var baseSpeed = 0.5;
+var numCols = 6;
+var numRows = 7;
 
-let getRandomInt = function(min, max) {
+var getRandomInt = function(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
