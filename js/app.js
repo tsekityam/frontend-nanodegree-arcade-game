@@ -143,6 +143,7 @@ Player.prototype.update = function(dt) {
         // character reached the water, so we can start another turn.
         if (this.states.indexOf('Stopped') === -1) {
             selector.state = 'Active';
+            allEnemies.push(new Enemy(-1, getRandomInt(1, numRows - 2), getRandomInt(2, 7)));
         }
         this.states.splice(this.states.indexOf('Active'), 1);
         this.states.push('Stopped')
