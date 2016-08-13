@@ -58,7 +58,7 @@ Enemy.prototype.update = function(dt) {
 // the player to it's original position after restart the game or collision.
 // dx and dy is the user input on the chaneg of player coordinates. We will
 // try to update player by these value in update()
-// State is used to store current player state. we will enable or disable
+// States are used to store current player state. we will enable or disable
 // ability of player in different state.
 var Player = function(x, y, sprite) {
     Element.call(this, x, y, sprite);
@@ -68,7 +68,7 @@ var Player = function(x, y, sprite) {
     };
     this.dx = 0;
     this.dy = 0;
-    this.state = 'Waiting';
+    this.states = ['Waiting'];
 };
 
 Player.prototype = Object.create(Element.prototype);
@@ -111,15 +111,16 @@ Player.prototype.update = function(dt) {
     if (this.x >= numCols) {
         this.x = numCols - 1;
     }
-    if (this.y >= (numRows - 1) && this.state !== 'Waiting') {
+    if (this.y >= (numRows - 1) && this.states.indexOf('Waiting') === -1) {
         this.y = numRows - 2;
     }
     if (this.y === 0) {
         // character reached the water, so we can start another turn.
-        if (this.state !== 'Stopped') {
+        if (this.states.indexOf('Stopped') === -1) {
             selector.state = 'Active';
         }
-        this.state = 'Stopped';
+        this.states.splice(this.states.indexOf('Active'), 1);
+        this.states.push('Stopped')
     }
 };
 
@@ -144,7 +145,7 @@ Player.prototype.handleInput = function(allowedKeys) {
 };
 
 Player.prototype.reset = function() {
-    this.state = 'Waiting';
+    this.states = ['Waiting'];
     this.x = this.original.x;
     this.y = this.original.y;
     selector.state = 'Active';
@@ -245,7 +246,7 @@ Selector.prototype.handleInput = function(allowedKeys) {
             var selector = this;
             allPlayers.forEach(function(player) {
                 if (isCollided(selector.x, selector.y, player.x, player.y)) {
-                    player.state = 'Active';
+                    player.states = ['Active'];
                     player.handleInput('up');
                     selector.state = 'Paused';
                 }
@@ -281,7 +282,7 @@ var Message = function() {
 Message.prototype.update = function() {
     var gameEnded = true;
     allPlayers.forEach(function(player) {
-        gameEnded = gameEnded && player.state === 'Stopped';
+        gameEnded = gameEnded && player.states.indexOf('Stopped') > -1;
     });
     if (gameEnded) {
         this.shouldShow = true;
@@ -358,7 +359,7 @@ document.addEventListener('keyup', function(e) {
     };
 
     allPlayers.forEach(function(player) {
-        if (player.state === 'Active') {
+        if (player.states.indexOf('Active') > -1) {
             player.handleInput(allowedKeys[e.keyCode]);
         }
     });
