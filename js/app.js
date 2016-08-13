@@ -77,6 +77,15 @@ Enemy.prototype.update = function(dt) {
 // try to update player by these value in update()
 // States are used to store current player state. we will enable or disable
 // ability of player in different state.
+// Now we have 5 states:
+// 1. Active, iff player of controlled by user
+// 2. Waiting, if the player is not controlled by user nor in the river
+// 3. Stopped, iff the player is in the river
+// 4. Unstoppable, iff the player can be in the same squre with rock or another
+//    player
+// 5. Unbeatable, iff the player will not collide with bug, and the bug will be
+//    blocked by player instead
+// Note: 1, 2 and 3 are mutually exclusive
 var Player = function(x, y, sprite) {
     Element.call(this, x, y, sprite);
     this.original = {
