@@ -27,6 +27,7 @@ Element.prototype.render = function() {
 // Enemies our player must avoid
 var Enemy = function(x, y, speedFactor) {
     Element.call(this, x, y, 'images/enemy-bug.png');
+    this.states = ['Active'];
     this.speedFactor = speedFactor;
 };
 
@@ -36,21 +37,35 @@ Enemy.prototype.constructor = Enemy;
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    this.x += this.speedFactor * baseSpeed * dt;
+    // Check collation
+    var enemy = this;
+    var shouldWait = false;
+    allPlayers.forEach(function(player) {
+        if (isCollided(enemy.x, enemy.y, player.x, player.y)) {
+            if (player.states.indexOf('Unbeatable') === -1) {
+                player.reset();
+            } else {
+                enemy.states.splice(enemy.states.indexOf('Active'), 1);
+                enemy.states.push('Waiting');
+                shouldWait = true;
+            }
+        } else {
+            if (!shouldWait) {
+                enemy.states.splice(enemy.states.indexOf('Waiting'), 1);
+                enemy.states.push('Active');
+            }
+        }
+    });
+
+    if (enemy.states.indexOf('Active') > -1) {
+        // You should multiply any movement by the dt parameter
+        // which will ensure the game runs at the same speed for
+        // all computers.
+        this.x += this.speedFactor * baseSpeed * dt;
+    }
     if (this.x >= numCols) {
         this.x = -1;
     }
-
-    // Check collation
-    var enemy = this;
-    allPlayers.forEach(function(player) {
-        if (isCollided(enemy.x, enemy.y, player.x, player.y)) {
-            player.reset();
-        }
-    });
 };
 
 // Player has two new fields, original and state.
@@ -77,18 +92,28 @@ Player.prototype.constructor = Player;
 Player.prototype.update = function(dt) {
 
     var player = this;
-    allRocks.forEach(function(rock) {
-      if (isCollided(player.x + player.dx, player.y + player.dy, rock.x, rock.y)) {
-          player.dx = 0;
-          player.dy = 0;
-      }
+
+    if (player.states.indexOf('Unstoppable') === -1) {
+        allRocks.forEach(function(rock) {
+          if (isCollided(player.x + player.dx, player.y + player.dy, rock.x, rock.y)) {
+              player.dx = 0;
+              player.dy = 0;
+          }
+        });
+        allPlayers.forEach(function(anotherPlayer) {
+          if (isCollided(player.x + player.dx, player.y + player.dy, anotherPlayer.x, anotherPlayer.y)) {
+              player.dx = 0;
+              player.dy = 0;
+          }
+        });
+    }
+    allEnemies.forEach(function(enemy) {
+        if (isCollided(player.x + player.dx, player.y + player.dy, enemy.x, enemy.y)) {
+            player.dx = 0;
+            player.dy = 0;
+        }
     });
-    allPlayers.forEach(function(anotherPlayer) {
-      if (isCollided(player.x + player.dx, player.y + player.dy, anotherPlayer.x, anotherPlayer.y)) {
-          player.dx = 0;
-          player.dy = 0;
-      }
-    });
+
     this.x += this.dx;
     this.y += this.dy;
 
@@ -98,7 +123,7 @@ Player.prototype.update = function(dt) {
     allItems.forEach(function(item) {
         if (isCollided(player.x, player.y, item.x, item.y)) {
             allItems.splice(allItems.indexOf(item), 1);
-            item.consume();
+            item.consumeBy(player);
         }
     });
 
@@ -183,16 +208,18 @@ Item.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x * colWidth, this.y * rowHeight);
 };
 
-Item.prototype.consume = function () {
+Item.prototype.consumeBy = function (player) {
     switch (this.type) {
         case 'Gem Blue':
-        // TODO
+        player.states.push('Unbeatable')
         break;
         case 'Gem Green':
-        // TODO
+        player.states.push('Unstoppable')
         break;
         case 'Gem Orange':
-        // TODO
+        allEnemies.forEach(function(enemy) {
+            enemy.speedFactor /= 2;
+        });
         break;
         default:
 
