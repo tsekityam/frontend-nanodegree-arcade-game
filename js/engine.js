@@ -101,9 +101,6 @@ var Engine = (function(global) {
         allPlayers.forEach(function(player) {
             player.update();
         });
-        allMessages.forEach(function(message) {
-            message.update();
-        });
     }
 
     /* This function initially draws the "game level", it will then call

@@ -308,8 +308,11 @@ Rock.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x * colWidth, this.y * rowHeight);
 }
 
-var Message = function(x, y, message, font, align, color) {
-    this.shouldShow = false;
+// should show is a function with no parameters for figureing out show this
+// message be shown. It will be called within render(). If it return false,
+// render() will not draw anything, else message will be printed.
+var Message = function(x, y, message, font, align, color, shouldShow) {
+    this.shouldShow = shouldShow;
     this.x = x;
     this.y = y;
     this.message = message;
@@ -318,18 +321,8 @@ var Message = function(x, y, message, font, align, color) {
     this.color = color;
 };
 
-Message.prototype.update = function() {
-    var gameEnded = true;
-    allPlayers.forEach(function(player) {
-        gameEnded = gameEnded && player.states.indexOf('Stopped') > -1;
-    });
-    if (gameEnded) {
-        this.shouldShow = true;
-    }
-};
-
 Message.prototype.render = function() {
-    if (this.shouldShow) {
+    if (this.shouldShow()) {
         ctx.font = this.font;
         ctx.textAlign = this.textAlign;
         ctx.fillColor = this.color;
@@ -374,7 +367,13 @@ var allPlayers = [
 var selector = new Selector();
 
 var allMessages = [
-    new Message(0, 40, 'Mission Completed', '40px serif', 'left', 'Black')
+    new Message(0, 40, 'Mission Completed', '40px serif', 'left', 'Black', function() {
+        var isGameEnded = true;
+        allPlayers.forEach(function(player) {
+            isGameEnded = isGameEnded && player.states.indexOf('Stopped') > -1;
+        });
+        return isGameEnded;
+    })
 ];
 
 var allRocks = [];
