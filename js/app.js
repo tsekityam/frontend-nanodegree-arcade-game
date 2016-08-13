@@ -308,26 +308,33 @@ Rock.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x * colWidth, this.y * rowHeight);
 }
 
-// should show is a function with no parameters for figureing out show this
+// shouldShow is a function with no parameters for figureing out show this
 // message be shown. It will be called within render(). If it return false,
-// render() will not draw anything, else message will be printed.
-var Message = function(x, y, message, font, align, color, shouldShow) {
-    this.shouldShow = shouldShow;
+// render() will draw the text with secondaryColor, else message will be printed
+// with primaryColor.
+// As a result, secondaryColor should be white color or transparent color,
+// otherwise the text will be visible to user even if the state if the text
+// shoule not be shown.
+var Message = function(x, y, message, font, align, primaryColor, secondaryColor, shouldShow) {
     this.x = x;
     this.y = y;
     this.message = message;
     this.font = font;
     this.align = align;
-    this.color = color;
+    this.primaryColor = primaryColor;
+    this.secondaryColor = secondaryColor;
+    this.shouldShow = shouldShow;
 };
 
 Message.prototype.render = function() {
     if (this.shouldShow()) {
-        ctx.font = this.font;
-        ctx.textAlign = this.align;
-        ctx.fillStyle = this.color;
-        ctx.fillText(this.message, this.x, this.y);
+        ctx.fillStyle = this.primaryColor;
+    } else {
+        ctx.fillStyle = this.secondaryColor;
     }
+    ctx.font = this.font;
+    ctx.textAlign = this.align;
+    ctx.fillText(this.message, this.x, this.y);
 };
 
 // input are the coordinates of the elements.
@@ -367,12 +374,31 @@ var allPlayers = [
 var selector = new Selector();
 
 var allMessages = [
-    new Message(0, 40, 'Mission Completed', '40px serif', 'left', 'Black', function() {
+    new Message(numCols * colWidth / 2, (numRows - 2) * rowHeight, 'Mission Completed', '40px serif', 'center', 'Black', 'Transparent', function() {
         var isGameEnded = true;
         allPlayers.forEach(function(player) {
             isGameEnded = isGameEnded && player.states.indexOf('Stopped') > -1;
         });
         return isGameEnded;
+    }),
+    new Message(0, 20, 'Unstoppable', '20px serif', 'left', 'Green', 'White',  function() {
+        var isUnstoppable = false;
+        allPlayers.forEach(function(player) {
+            if (player.states.indexOf('Active') > -1 || (selector.state === 'Active' && isCollided(selector.x, selector.y, player.x, player.y))) {
+                isUnstoppable = isUnstoppable || player.states.indexOf('Unstoppable') > -1;
+            }
+        });
+        return isUnstoppable;
+    }),
+    new Message(0, 40, 'Unbeatable', '20px serif', 'left', 'Blue', 'White', function() {
+        var isUnbeatable = false;
+        allPlayers.forEach(function(player) {
+            if (player.states.indexOf('Active') > -1 || (selector.state === 'Active' && isCollided(selector.x, selector.y, player.x, player.y))) {
+                isUnbeatable = isUnbeatable || player.states.indexOf('Unbeatable') > -1;
+            }
+        });
+        return isUnbeatable;
+    }),
 ];
 
 var allRocks = [];
